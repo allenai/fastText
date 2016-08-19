@@ -212,7 +212,7 @@ void predict(Dictionary& dict, Model& model, std::string filename, int32_t k) {
       if (it != predictions.cbegin()) {
         std::cout << ' ';
       }
-      std::cout << dict.getLabel(it->second);
+      std::cout << dict.getLabel(it->second) << ' ' << it->first;
     }
     std::cout << std::endl;
   }

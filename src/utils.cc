@@ -12,9 +12,11 @@
 #include <cmath>
 #include <ios>
 
+namespace fasttext {
+
 namespace utils {
-  real* t_sigmoid;
-  real* t_log;
+  real* t_sigmoid = nullptr;
+  real* t_log = nullptr;
 
   real log(real x) {
     if (x > 1.0) {
@@ -41,6 +43,7 @@ namespace utils {
   }
 
   void initSigmoid() {
+    if (t_sigmoid != nullptr) return;
     t_sigmoid = new real[SIGMOID_TABLE_SIZE + 1];
     for (int i = 0; i < SIGMOID_TABLE_SIZE + 1; i++) {
       real x = real(i * 2 * MAX_SIGMOID) / SIGMOID_TABLE_SIZE - MAX_SIGMOID;
@@ -49,6 +52,7 @@ namespace utils {
   }
 
   void initLog() {
+    if (t_log != nullptr) return;
     t_log = new real[LOG_TABLE_SIZE + 1];
     for (int i = 0; i < LOG_TABLE_SIZE + 1; i++) {
       real x = (real(i) + 1e-5) / LOG_TABLE_SIZE;
@@ -69,8 +73,9 @@ namespace utils {
   }
 
   void seek(std::ifstream& ifs, int64_t pos) {
-    char c;
     ifs.clear();
     ifs.seekg(std::streampos(pos));
   }
+}
+
 }

@@ -29,10 +29,6 @@ $ make
 This will produce object files for all the classes as well as the main binary `fasttext`.
 If you do not plan on using the default system-wide compiler, update the two macros defined at the beginning of the Makefile (CC and INCLUDES).
 
-### Building with Docker
-
-If you inted to build with Docker, a Docker file is available here [fastText-Docker](https://github.com/xeb/fastText-docker).
-
 ## Example use cases
 
 This library has two main use cases: word representation learning and text classification.
@@ -109,6 +105,15 @@ The argument `k` is optional, and equal to `1` by default.
 See `classification-example.sh` for an example use case.
 In order to reproduce results from the paper [2](#bag-of-tricks-for-efficient-text-classification), run `classification-results.sh`, this will download all the datasets and reproduce the results from Table 1.
 
+If you want to compute vector representations of sentences or paragraphs, please use:
+
+```
+$ ./fasttext print-vectors model.bin < text.txt
+```
+
+This assumes that the `text.txt` file contains the paragraphs that you want to get vectors for.
+The program will output one vector representation per line in the file.
+
 ## Full documentation
 
 Invoke a command without arguments to list available arguments and their default values:
@@ -118,25 +123,28 @@ $ ./fasttext supervised
 Empty input or output path.
 
 The following arguments are mandatory:
-  -input      training file path
-  -output     output file path
+  -input              training file path
+  -output             output file path
 
 The following arguments are optional:
-  -lr         learning rate [0.05]
-  -dim        size of word vectors [100]
-  -ws         size of the context window [5]
-  -epoch      number of epochs [5]
-  -minCount   minimal number of word occurences [1]
-  -neg        number of negatives sampled [5]
-  -wordNgrams max length of word ngram [1]
-  -loss       loss function {ns, hs, softmax} [ns]
-  -bucket     number of buckets [2000000]
-  -minn       min length of char ngram [3]
-  -maxn       max length of char ngram [6]
-  -thread     number of threads [12]
-  -verbose    how often to print to stdout [10000]
-  -t          sampling threshold [0.0001]
-  -label      labels prefix [__label__]
+  -lr                 learning rate [0.1]
+  -lrUpdateRate       change the rate of updates for the learning rate [100]
+  -dim                size of word vectors [100]
+  -ws                 size of the context window [5]
+  -epoch              number of epochs [5]
+  -minCount           minimal number of word occurences [1]
+  -minCountLabel      minimal number of label occurences [0]
+  -neg                number of negatives sampled [5]
+  -wordNgrams         max length of word ngram [1]
+  -loss               loss function {ns, hs, softmax} [ns]
+  -bucket             number of buckets [2000000]
+  -minn               min length of char ngram [0]
+  -maxn               max length of char ngram [0]
+  -thread             number of threads [12]
+  -t                  sampling threshold [0.0001]
+  -label              labels prefix [__label__]
+  -verbose            verbosity level [2]
+  -pretrainedVectors  pretrained word vectors for supervised learning []
 ```
 
 Defaults may vary by mode. (Word-representation modes `skipgram` and `cbow` use a default `-minCount` of 5.)
@@ -147,7 +155,7 @@ Please cite [1](#enriching-word-vectors-with-subword-information) if using this 
 
 ### Enriching Word Vectors with Subword Information
 
-[1] P. Bojanowski\*, E. Grave\*, A. Joulin, T. Mikolov, [*Enriching Word Vectors with Subword Information*](https://arxiv.org/pdf/1607.04606v1.pdf)
+[1] P. Bojanowski\*, E. Grave\*, A. Joulin, T. Mikolov, [*Enriching Word Vectors with Subword Information*](https://arxiv.org/abs/1607.04606)
 
 ```
 @article{bojanowski2016enriching,
@@ -160,7 +168,7 @@ Please cite [1](#enriching-word-vectors-with-subword-information) if using this 
 
 ### Bag of Tricks for Efficient Text Classification
 
-[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, [*Bag of Tricks for Efficient Text Classification*](https://arxiv.org/pdf/1607.01759v2.pdf)
+[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, [*Bag of Tricks for Efficient Text Classification*](https://arxiv.org/abs/1607.01759)
 
 ```
 @article{joulin2016bag,
@@ -172,6 +180,10 @@ Please cite [1](#enriching-word-vectors-with-subword-information) if using this 
 ```
 
 (\* These authors contributed equally.)
+
+## Resources
+
+You can find the preprocessed YFCC100M data used in [2] at https://research.facebook.com/research/fasttext/
 
 ## Join the fastText community
 
